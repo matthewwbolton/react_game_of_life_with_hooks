@@ -2,8 +2,8 @@ import React, { useState, useCallback, useRef } from "react";
 import "./App.css";
 import produce from "immer";
 
-const numRows = 100;
-const numCols = 100;
+const numRows = 75;
+const numCols = 75;
 
 const operations = [
   [-1, 1],
@@ -69,6 +69,36 @@ function App() {
 
   return (
     <>
+      <h1>The Game of Life</h1>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: `repeat(${numCols}, 10px)`,
+          justifyContent: "center",
+        }}
+      >
+        {grid.map((rows, i) =>
+          rows.map((col, k) => (
+            <div
+              id="td"
+              key={`${i}-${k}`}
+              onClick={() => {
+                const newGrid = produce(grid, (gridCopy) => {
+                  gridCopy[i][k] = grid[i][k] ? 0 : 1;
+                });
+                setGrid(newGrid);
+              }}
+              style={{
+                width: 10,
+                height: 10,
+                backgroundColor: grid[i][k] ? "salmon" : undefined,
+                border: "1px solid black",
+                borderColor: "darkgrey",
+              }}
+            />
+          ))
+        )}
+      </div>
       <button
         onClick={() => {
           setRunning(!running);
@@ -101,32 +131,6 @@ function App() {
       >
         Random
       </button>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: `repeat(${numCols}, 10px)`,
-        }}
-      >
-        {grid.map((rows, i) =>
-          rows.map((col, k) => (
-            <div
-              key={`${i}-${k}`}
-              onClick={() => {
-                const newGrid = produce(grid, (gridCopy) => {
-                  gridCopy[i][k] = grid[i][k] ? 0 : 1;
-                });
-                setGrid(newGrid);
-              }}
-              style={{
-                width: 10,
-                height: 10,
-                backgroundColor: grid[i][k] ? "limegreen" : undefined,
-                border: "1px solid black",
-              }}
-            />
-          ))
-        )}
-      </div>
     </>
   );
 }
