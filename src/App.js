@@ -35,6 +35,31 @@ function App() {
   const runningRef = useRef(running);
   runningRef.current = running;
 
+  let [generation, setGeneration] = useState(0);
+
+  const [speed, setSpeed] = useState();
+
+  const Slider = ({ speed, onSpeedChange }) => {
+    const handleChange = (e) => onSpeedChange(e.target.value);
+
+    return (
+      <input
+        type="range"
+        min="50"
+        max="1000"
+        step="50"
+        value={speed}
+        onChange={handleChange}
+      />
+    );
+  };
+
+  const handleSpeedChange = (newSpeed) => {
+    setSpeed(newSpeed);
+  };
+
+  console.log(speed);
+
   const runSimulation = useCallback(() => {
     if (!runningRef.current) {
       return;
@@ -42,6 +67,8 @@ function App() {
 
     // simulate
     setGrid((g) => {
+      setGeneration(generation++);
+
       return produce(g, (gridCopy) => {
         for (let i = 0; i < numRows; i++) {
           for (let k = 0; k < numCols; k++) {
@@ -64,8 +91,9 @@ function App() {
       });
     });
 
-    setTimeout(runSimulation, 100);
-  }, []);
+    console.log("SPEED", speed);
+    setTimeout(runSimulation, speed);
+  }, [generation]);
 
   return (
     <>
@@ -99,38 +127,48 @@ function App() {
           ))
         )}
       </div>
-      <button
-        onClick={() => {
-          setRunning(!running);
-          if (!running) {
-            runningRef.current = true;
-            runSimulation();
-          }
-        }}
-      >
-        {!running ? "Start" : "Stop"}
-      </button>
-      <button
-        onClick={() => {
-          setGrid(generateEmptyGrid());
-        }}
-      >
-        Clear
-      </button>
-      <button
-        onClick={() => {
-          const rows = [];
-          for (let i = 0; i < numRows; i++) {
-            rows.push(
-              Array.from(Array(numCols), () => (Math.random() > 0.75 ? 1 : 0))
-            );
-          }
+      <div className="flexRow upperControls">
+        <span>
+          {"- "}
+          <Slider speed={speed} onSpeedChange={handleSpeedChange} />
+          {" +"}
+        </span>
+        {`Generation: ${generation}`}
+      </div>
+      <div className="flexRow lowerControls">
+        <button
+          onClick={() => {
+            setRunning(!running);
+            if (!running) {
+              runningRef.current = true;
+              runSimulation();
+            }
+          }}
+        >
+          {!running ? "Start" : "Stop"}
+        </button>
+        <button
+          onClick={() => {
+            setGrid(generateEmptyGrid());
+          }}
+        >
+          Clear
+        </button>
+        <button
+          onClick={() => {
+            const rows = [];
+            for (let i = 0; i < numRows; i++) {
+              rows.push(
+                Array.from(Array(numCols), () => (Math.random() > 0.75 ? 1 : 0))
+              );
+            }
 
-          setGrid(rows);
-        }}
-      >
-        Random
-      </button>
+            setGrid(rows);
+          }}
+        >
+          Random
+        </button>
+      </div>
     </>
   );
 }
