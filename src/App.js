@@ -35,9 +35,9 @@ function App() {
   const runningRef = useRef(running);
   runningRef.current = running;
 
-  let [generation, setGeneration] = useState(0);
+  let [generation, setGeneration] = useState(1);
 
-  const [speed, setSpeed] = useState();
+  const [speed, setSpeed] = useState(1000);
 
   const Slider = ({ speed, onSpeedChange }) => {
     const handleChange = (e) => onSpeedChange(e.target.value);
@@ -58,17 +58,14 @@ function App() {
     setSpeed(newSpeed);
   };
 
-  console.log(speed);
+  console.log("handleSpeedChange", speed);
 
   const runSimulation = useCallback(() => {
     if (!runningRef.current) {
       return;
     }
-
     // simulate
     setGrid((g) => {
-      setGeneration(generation++);
-
       return produce(g, (gridCopy) => {
         for (let i = 0; i < numRows; i++) {
           for (let k = 0; k < numCols; k++) {
@@ -90,10 +87,10 @@ function App() {
         }
       });
     });
-
+    setGeneration((generation += 1));
     console.log("SPEED", speed);
     setTimeout(runSimulation, speed);
-  }, [generation]);
+  }, []);
 
   return (
     <>
@@ -129,9 +126,9 @@ function App() {
       </div>
       <div className="flexRow upperControls">
         <span>
-          {"- "}
+          {"+ "}
           <Slider speed={speed} onSpeedChange={handleSpeedChange} />
-          {" +"}
+          {" -"}
         </span>
         {`Generation: ${generation}`}
       </div>
@@ -150,6 +147,7 @@ function App() {
         <button
           onClick={() => {
             setGrid(generateEmptyGrid());
+            setGeneration(1);
           }}
         >
           Clear
@@ -162,7 +160,6 @@ function App() {
                 Array.from(Array(numCols), () => (Math.random() > 0.75 ? 1 : 0))
               );
             }
-
             setGrid(rows);
           }}
         >
