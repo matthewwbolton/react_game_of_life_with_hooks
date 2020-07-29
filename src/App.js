@@ -5,12 +5,14 @@ import styled from "styled-components";
 
 const ContainerDiv = styled.div`
   display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 `;
 
-// const ButtonDiv = styled.div`
-//   display: flex,
-//   flex-direction:
-// `
+const ButtonDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 const numRows = 75;
 const numCols = 75;
@@ -153,43 +155,54 @@ function App() {
   return (
     <>
       <h1>The Game of Life</h1>
-
-      {/* <h3>Still Lifes</h3>
-        <button>Block</button>
-        <button>Beehive</button>
-        <button>Loaf</button>
-        <button>Boat</button>
-        <button>Tub</button> */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: `repeat(${numCols}, 10px)`,
-          justifyContent: "center",
-          borderCollapse: "collapse",
-        }}
-      >
-        {grid.map((rows, i) =>
-          rows.map((col, k) => (
-            <div
-              id="td"
-              key={`${i}-${k}`}
-              onClick={() => {
-                const newGrid = produce(grid, (gridCopy) => {
-                  gridCopy[i][k] = grid[i][k] ? 0 : 1;
-                });
-                setGrid(newGrid);
-              }}
-              style={{
-                width: 10,
-                height: 10,
-                backgroundColor: grid[i][k] ? "salmon" : undefined,
-                border: "1px solid black",
-                borderColor: "darkgrey",
-              }}
-            />
-          ))
-        )}
-      </div>
+      <ContainerDiv>
+        <ButtonDiv>
+          <h3>Still Lifes</h3>
+          <button>Block</button>
+          <button>Beehive</button>
+          <button>Loaf</button>
+          <button>Boat</button>
+          <button>Tub</button>
+        </ButtonDiv>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: `repeat(${numCols}, 10px)`,
+            justifyContent: "center",
+            borderCollapse: "collapse",
+          }}
+        >
+          {grid.map((rows, i) =>
+            rows.map((col, k) => (
+              <div
+                id="td"
+                key={`${i}-${k}`}
+                onClick={() => {
+                  const newGrid = produce(grid, (gridCopy) => {
+                    gridCopy[i][k] = grid[i][k] ? 0 : 1;
+                  });
+                  setGrid(newGrid);
+                }}
+                style={{
+                  width: 10,
+                  height: 10,
+                  backgroundColor: grid[i][k] ? "salmon" : undefined,
+                  border: "1px solid black",
+                  borderColor: "darkgrey",
+                }}
+              />
+            ))
+          )}
+        </div>
+        <ButtonDiv>
+          <h3>Oscillators</h3>
+          <button>Blinker</button>
+          <button>Toad</button>
+          <button>Beacon</button>
+          <button>Pulsar</button>
+          <button>Pentadecathalon</button>
+        </ButtonDiv>
+      </ContainerDiv>
 
       <div className="flexRow upperControls">
         <span>
