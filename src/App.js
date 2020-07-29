@@ -37,7 +37,7 @@ function App() {
 
   let [generation, setGeneration] = useState(1);
 
-  const [speed, setSpeed] = useState(1000);
+  const [speed, setSpeed] = useState(500);
 
   const Slider = ({ speed, onSpeedChange }) => {
     const handleChange = (e) => onSpeedChange(e.target.value);
@@ -61,6 +61,7 @@ function App() {
   console.log("handleSpeedChange", speed);
 
   const runSimulation = useCallback(() => {
+    console.log("Inside Simulation: ", speed);
     if (!runningRef.current) {
       return;
     }
@@ -90,7 +91,7 @@ function App() {
     setGeneration((generation += 1));
     console.log("SPEED", speed);
     setTimeout(runSimulation, speed);
-  }, []);
+  }, [speed]);
 
   return (
     <>
@@ -100,6 +101,7 @@ function App() {
           display: "grid",
           gridTemplateColumns: `repeat(${numCols}, 10px)`,
           justifyContent: "center",
+          borderCollapse: "collapse",
         }}
       >
         {grid.map((rows, i) =>
