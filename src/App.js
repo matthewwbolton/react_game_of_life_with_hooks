@@ -37,6 +37,9 @@ function App() {
 
   let [generation, setGeneration] = useState(1);
 
+  const generationRef = useRef(generation);
+  generationRef.current = generation;
+
   const [speed, setSpeed] = useState(500);
 
   const Slider = ({ speed, onSpeedChange }) => {
@@ -88,8 +91,9 @@ function App() {
         }
       });
     });
-    setGeneration((generation += 1));
-    console.log("SPEED", speed);
+
+    setGeneration((generationRef.current += 1));
+
     setTimeout(runSimulation, speed);
   }, [speed]);
 
