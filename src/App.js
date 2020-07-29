@@ -1,6 +1,16 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import "./App.css";
 import produce from "immer";
+import styled from "styled-components";
+
+const ContainerDiv = styled.div`
+  display: flex;
+`;
+
+// const ButtonDiv = styled.div`
+//   display: flex,
+//   flex-direction:
+// `
 
 const numRows = 75;
 const numCols = 75;
@@ -29,18 +39,22 @@ function App() {
   const [grid, setGrid] = useState(() => {
     return generateEmptyGrid();
   });
+  const gridRef = useRef(grid);
+  gridRef.current = grid;
 
   const [running, setRunning] = useState(false);
 
   const runningRef = useRef(running);
   runningRef.current = running;
 
-  let [generation, setGeneration] = useState(1);
+  const [generation, setGeneration] = useState(1);
 
   const generationRef = useRef(generation);
   generationRef.current = generation;
 
   const [speed, setSpeed] = useState(500);
+
+  const [gridCache, setGridCache] = useState({});
 
   const Slider = ({ speed, onSpeedChange }) => {
     const handleChange = (e) => onSpeedChange(e.target.value);
@@ -61,14 +75,12 @@ function App() {
     setSpeed(newSpeed);
   };
 
-  console.log("handleSpeedChange", speed);
-
   const runSimulation = useCallback(() => {
-    console.log("Inside Simulation: ", speed);
     if (!runningRef.current) {
       return;
     }
-    // simulate
+    // run the game:
+
     setGrid((g) => {
       return produce(g, (gridCopy) => {
         for (let i = 0; i < numRows; i++) {
@@ -97,9 +109,57 @@ function App() {
     setTimeout(runSimulation, speed);
   }, [speed]);
 
+  useEffect(() => {
+    setGridCache({
+      ...gridCache,
+      [generationRef.current]: gridRef.current,
+    });
+  }, [gridRef.current]);
+
+  const speedDown = () => {
+    if (speed === 50) {
+      return;
+    } else {
+      setSpeed(speed - 50);
+    }
+  };
+
+  const speedUp = () => {
+    if (speed === 1000) {
+      return;
+    } else {
+      setSpeed(speed + 50);
+    }
+  };
+
+  const generationUp = () => {
+    if (generation > Object.keys(gridCache).length - 1) {
+      return;
+    } else {
+      setGeneration(generation + 1);
+      setGrid(gridCache[generation + 1]);
+    }
+  };
+
+  const generationDown = () => {
+    if (generation > 1) {
+      setGeneration(generation - 1);
+      setGrid(gridCache[generation - 1]);
+    } else {
+      return;
+    }
+  };
+
   return (
     <>
       <h1>The Game of Life</h1>
+
+      {/* <h3>Still Lifes</h3>
+        <button>Block</button>
+        <button>Beehive</button>
+        <button>Loaf</button>
+        <button>Boat</button>
+        <button>Tub</button> */}
       <div
         style={{
           display: "grid",
@@ -130,13 +190,18 @@ function App() {
           ))
         )}
       </div>
+
       <div className="flexRow upperControls">
         <span>
-          {"+ "}
+          <button onClick={speedDown}>{"+ "}</button>
           <Slider speed={speed} onSpeedChange={handleSpeedChange} />
-          {" -"}
+          <button onClick={speedUp}>{" -"}</button>
         </span>
-        {`Generation: ${generation}`}
+        <span>
+          <button onClick={generationDown}>{"- "}</button>
+          {`Generation: ${generation}`}
+          <button onClick={generationUp}>{" +"}</button>
+        </span>
       </div>
       <div className="flexRow lowerControls">
         <button
