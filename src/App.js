@@ -15,6 +15,10 @@ const ButtonDiv = styled.div`
   flex-direction: column;
 `;
 
+const CountDiv = styled.div`
+  font-variant: small-cap;
+`;
+
 const numRows = 50;
 const numCols = 60;
 
@@ -59,6 +63,16 @@ function App() {
 
   const [gridCache, setGridCache] = useState({});
 
+  const [liveCount, setLiveCount] = useState(0);
+
+  const liveCountRef = useRef(liveCount);
+  liveCountRef.current = liveCount;
+
+  const [deadCount, setDeadCount] = useState(0);
+
+  const deadCountRef = useRef(deadCount);
+  deadCountRef.current = deadCount;
+
   const Slider = ({ speed, onSpeedChange }) => {
     const handleChange = (e) => onSpeedChange(e.target.value);
 
@@ -85,6 +99,8 @@ function App() {
     // run the game:
 
     setGrid((g) => {
+      let dead = 0;
+      let live = 0;
       return produce(g, (gridCopy) => {
         for (let i = 0; i < numRows; i++) {
           for (let k = 0; k < numCols; k++) {
@@ -101,6 +117,16 @@ function App() {
               gridCopy[i][k] = 0;
             } else if (g[i][k] === 0 && neighbors === 3) {
               gridCopy[i][k] = 1;
+            }
+
+            if (gridCopy[i][k] === 0) {
+              dead += 1;
+              console.log("deadCount: ", dead);
+              setDeadCount(dead);
+            } else if (gridCopy[i][k] === 1) {
+              live += 1;
+              console.log("liveCount: ", live);
+              setLiveCount(live);
             }
           }
         }
@@ -168,10 +194,42 @@ function App() {
           >
             Block
           </button>
-          <button>Beehive</button>
-          <button>Loaf</button>
-          <button>Boat</button>
-          <button>Tub</button>
+          <button
+            onClick={() => {
+              setGrid(generateEmptyGrid());
+              setGeneration(1);
+              setGrid(ExamplePatters.beehive);
+            }}
+          >
+            Beehive
+          </button>
+          <button
+            onClick={() => {
+              setGrid(generateEmptyGrid());
+              setGeneration(1);
+              setGrid(ExamplePatters.loaf);
+            }}
+          >
+            Loaf
+          </button>
+          <button
+            onClick={() => {
+              setGrid(generateEmptyGrid());
+              setGeneration(1);
+              setGrid(ExamplePatters.boat);
+            }}
+          >
+            Boat
+          </button>
+          <button
+            onClick={() => {
+              setGrid(generateEmptyGrid());
+              setGeneration(1);
+              setGrid(ExamplePatters.tub);
+            }}
+          >
+            Tub
+          </button>
         </ButtonDiv>
         <div
           style={{
@@ -205,11 +263,56 @@ function App() {
         </div>
         <ButtonDiv>
           <h3>Oscillators</h3>
-          <button className="sideButtons">Blinker</button>
-          <button className="sideButtons">Toad</button>
-          <button className="sideButtons">Beacon</button>
-          <button className="sideButtons">Pulsar</button>
-          <button className="sideButtons">Pentadecathalon</button>
+          <button
+            onClick={() => {
+              setGrid(generateEmptyGrid());
+              setGeneration(1);
+              setGrid(ExamplePatters.blinker);
+            }}
+            className="sideButtons"
+          >
+            Blinker
+          </button>
+          <button
+            onClick={() => {
+              setGrid(generateEmptyGrid());
+              setGeneration(1);
+              setGrid(ExamplePatters.toad);
+            }}
+            className="sideButtons"
+          >
+            Toad
+          </button>
+          <button
+            onClick={() => {
+              setGrid(generateEmptyGrid());
+              setGeneration(1);
+              setGrid(ExamplePatters.beacon);
+            }}
+            className="sideButtons"
+          >
+            Beacon
+          </button>
+          <button
+            onClick={() => {
+              setGrid(generateEmptyGrid());
+              setGeneration(1);
+              setGrid(ExamplePatters.pulsar);
+            }}
+            className="sideButtons"
+          >
+            Pulsar
+          </button>
+          <button
+            onClick={() => {
+              setGrid(generateEmptyGrid());
+              setGeneration(1);
+              setGrid(ExamplePatters.pentadecathlon);
+            }}
+            className="sideButtons"
+          >
+            Pentadecathlon
+          </button>
         </ButtonDiv>
       </ContainerDiv>
 
@@ -220,11 +323,23 @@ function App() {
           <button onClick={speedUp}>{" -"}</button>
         </span>
         <span>
-          <button onClick={generationDown}>{"- "}</button>
+          <button
+            onClick={() => {
+              generationDown();
+            }}
+          >
+            {"- "}
+          </button>
           {`Generation: ${generation}`}
           <button onClick={generationUp}>{" +"}</button>
         </span>
       </div>
+      <CountDiv>
+        <span
+          style={{ marginRight: "10%" }}
+        >{`Live Cell Count: ${liveCount}`}</span>
+        <span>{`Dead Cell Count: ${deadCount}`}</span>
+      </CountDiv>
       <div className="flexRow lowerControls">
         <button
           onClick={() => {
@@ -241,6 +356,8 @@ function App() {
           onClick={() => {
             setGrid(generateEmptyGrid());
             setGeneration(1);
+            setDeadCount(0);
+            setLiveCount(0);
           }}
         >
           Clear
