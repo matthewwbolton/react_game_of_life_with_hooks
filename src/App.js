@@ -2,6 +2,7 @@ import React, { useState, useCallback, useRef, useEffect } from "react";
 import "./App.css";
 import produce from "immer";
 import styled from "styled-components";
+const ExamplePatters = require("./components/ExamplePatterns");
 
 const ContainerDiv = styled.div`
   display: flex;
@@ -14,8 +15,8 @@ const ButtonDiv = styled.div`
   flex-direction: column;
 `;
 
-const numRows = 75;
-const numCols = 75;
+const numRows = 50;
+const numCols = 60;
 
 const operations = [
   [-1, 1],
@@ -158,7 +159,15 @@ function App() {
       <ContainerDiv>
         <ButtonDiv>
           <h3>Still Lifes</h3>
-          <button>Block</button>
+          <button
+            onClick={() => {
+              setGrid(generateEmptyGrid());
+              setGeneration(1);
+              setGrid(ExamplePatters.block);
+            }}
+          >
+            Block
+          </button>
           <button>Beehive</button>
           <button>Loaf</button>
           <button>Boat</button>
@@ -196,11 +205,11 @@ function App() {
         </div>
         <ButtonDiv>
           <h3>Oscillators</h3>
-          <button>Blinker</button>
-          <button>Toad</button>
-          <button>Beacon</button>
-          <button>Pulsar</button>
-          <button>Pentadecathalon</button>
+          <button className="sideButtons">Blinker</button>
+          <button className="sideButtons">Toad</button>
+          <button className="sideButtons">Beacon</button>
+          <button className="sideButtons">Pulsar</button>
+          <button className="sideButtons">Pentadecathalon</button>
         </ButtonDiv>
       </ContainerDiv>
 

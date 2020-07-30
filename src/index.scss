@@ -5,6 +5,7 @@ $alive-color: white;
 $alive-hover-color: red;
 $border-color: darkGray;
 $cell-size: 10px;
+$button-hover-color: rgb(33, 47, 60);
 
 body {
   color: $color;
@@ -44,14 +45,30 @@ button {
   outline: none;
   border-radius: 20px;
   margin: 20px 10px;
-  padding: 10px 15px;
+  padding: 10px 30px;
   font-size: 18px;
   color: $color;
   background-color: $border-color;
   cursor: pointer;
 
   &:hover {
-    color: $alive-hover-color;
+    color: $button-hover-color;
+  }
+}
+
+button.sideButtons {
+  border: none;
+  outline: none;
+  border-radius: 20px;
+  margin: 20px 10px;
+  padding: 10px 0;
+  font-size: 18px;
+  color: $color;
+  background-color: $border-color;
+  cursor: pointer;
+
+  &:hover {
+    color: $button-hover-color;
   }
 }
 
@@ -69,7 +86,7 @@ button {
 }
 
 .upperControls {
-  width: 500px;
+  width: 650px;
 }
 
 .lowerControls {
