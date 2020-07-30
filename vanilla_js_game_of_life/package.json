@@ -1,0 +1,19 @@
+{
+  "name": "vanilla_js_game_of_life",
+  "version": "1.0.0",
+  "description": "Vanilla JS Version of Conway's Game of Life",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewwbolton/vanilla_js_game_of_life.git"
+  },
+  "author": "Matthew W. Bolton",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/matthewwbolton/vanilla_js_game_of_life/issues"
+  },
+  "homepage": "https://github.com/matthewwbolton/vanilla_js_game_of_life#readme"
+}
