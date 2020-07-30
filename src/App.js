@@ -121,11 +121,9 @@ function App() {
 
             if (gridCopy[i][k] === 0) {
               dead += 1;
-              console.log("deadCount: ", dead);
               setDeadCount(dead);
             } else if (gridCopy[i][k] === 1) {
               live += 1;
-              console.log("liveCount: ", live);
               setLiveCount(live);
             }
           }
@@ -358,6 +356,7 @@ function App() {
             setGeneration(1);
             setDeadCount(0);
             setLiveCount(0);
+            setGridCache({});
           }}
         >
           Clear
@@ -375,6 +374,36 @@ function App() {
         >
           Random
         </button>
+      </div>
+      <div>
+        <h2 style={{ textDecoration: "underline" }}>Rules of the Game</h2>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <li>
+            <span style={{ textDecoration: "underline" }}>Rule # 1:</span> Any
+            live cell with less than 2 live neighbors will not live to the next
+            generation, as if by under-population.
+          </li>
+          <li>
+            <span style={{ textDecoration: "underline" }}>Rule # 2:</span> Any
+            cell with 2 or 3 live neighbors will live on to the next generation.
+          </li>
+          <li>
+            <span style={{ textDecoration: "underline" }}>Rule # 3:</span> Any
+            live cell with more than 3 live neighbors will not live to the next
+            generation, as if by overpopulation.
+          </li>
+          <li>
+            <span style={{ textDecoration: "underline" }}>Rule # 4:</span> Any
+            dead cell with exactly 3 live neighbors will become a live cell in
+            the next generation, as if by reproduction.
+          </li>
+        </div>
       </div>
     </>
   );
