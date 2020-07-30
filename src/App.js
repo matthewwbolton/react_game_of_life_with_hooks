@@ -143,6 +143,10 @@ function App() {
     });
   }, [gridRef.current]);
 
+  useEffect(() => {
+    historicalCellCount(grid);
+  }, [grid]);
+
   const speedDown = () => {
     if (speed === 50) {
       return;
@@ -165,6 +169,7 @@ function App() {
     } else {
       setGeneration(generation + 1);
       setGrid(gridCache[generation + 1]);
+      historicalCellCount(grid);
     }
   };
 
@@ -172,9 +177,26 @@ function App() {
     if (generation > 1) {
       setGeneration(generation - 1);
       setGrid(gridCache[generation - 1]);
+      historicalCellCount(grid);
     } else {
       return;
     }
+  };
+
+  const historicalCellCount = (grid) => {
+    let dead = 0;
+    let live = 0;
+    for (let i = 0; i < numRows; i++) {
+      for (let k = 0; k < numCols; k++) {
+        if (grid[i][k] === 0) {
+          dead += 1;
+        } else {
+          live += 1;
+        }
+      }
+    }
+    setDeadCount(dead);
+    setLiveCount(live);
   };
 
   return (
@@ -324,12 +346,20 @@ function App() {
           <button
             onClick={() => {
               generationDown();
+              // historicalCellCount(gridCache[generation]);
             }}
           >
             {"- "}
           </button>
           {`Generation: ${generation}`}
-          <button onClick={generationUp}>{" +"}</button>
+          <button
+            onClick={() => {
+              generationUp();
+              // historicalCellCount(gridCache[generation]);
+            }}
+          >
+            {" +"}
+          </button>
         </span>
       </div>
       <CountDiv>
@@ -370,6 +400,7 @@ function App() {
               );
             }
             setGrid(rows);
+            historicalCellCount(rows);
           }}
         >
           Random

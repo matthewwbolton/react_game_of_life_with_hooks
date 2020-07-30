@@ -20,8 +20,6 @@ Core Technical/Inspiration
 
 ToDo
 
-    -   Currently the “live” and “dead” counts to not change in accordance with the specific generation being displayed as the user steps forward or backward through each generation.
-
     -   The user currently has to pause the game in order to adjust the speed at which each subsequent generation is calculated and rendered.
 
     -   I would like to add functionality that would allow the user to predict future generations by calculating the configuration of cells at a user specified point in time, based on the current generation of the board.
