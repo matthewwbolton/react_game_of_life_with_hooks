@@ -14,7 +14,7 @@ Intro
 
 Core Technical/Inspiration
 
-    -   This project was initially written using Vanilla JavaScript and utilizing direct DOM manipulation. This implementation is also included in the repo as a reference.
+    -   This project was initially written using Vanilla JavaScript and utilizing direct DOM manipulation. This implementation is also included in the repo in a separate branch entitled Vanilla JavaScript Game of Life as a reference.
 
     - The second iteration of this build was implemented utilizing the React framework in order to take advantage of its built in state management and flexibility.
 
